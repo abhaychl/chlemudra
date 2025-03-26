@@ -1,0 +1,106 @@
+﻿@model IEnumerable<CHLeMudra.Entity.DocumentSignHistory>
+@using GridMvc.Html
+@{
+    ViewBag.Title = "Signed Document";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    int SrNo = 0;
+}
+<link href="~/Content/Gridmvc.css" rel="stylesheet" />
+<div id="content">
+    <div id="content-header">
+        <div id="breadcrumb" style="float:left;"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="tip-bottom">Signed Document</a> </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="col-md-12">
+                <h3 style="float:left;">Sign Documents</h3>
+                <a href="@Url.Action("SyncSignedDocument")" class="btn  btn-info" style="float:right;margin-top: 20px;
+    background: #012954;">Sync Signed Documents</a>
+                <div class="clear-fix"></div>
+            </div>
+            <div class="col-md-12">
+                <hr />
+                @*@using (Html.BeginForm())
+        {
+            <div class="widget-content nopadding" style="text-align:left;">
+                <div class="row-fluid">
+                    <div class="control-group span2">
+                        <label class="control-label">From Date</label>
+                        <div class="controls">
+                            @Html.TextBoxFor(x => x.FromDate, new { @class = "span12 datepicker", autocomplete = "off" })
+                            @Html.ValidationMessageFor(x => x.FromDate)
+                        </div>
+                    </div>
+
+                    <div class="control-group span4">
+                        <label class="control-label">&nbsp;</label>
+                        <div class="controls">
+
+                            <button type="submit" onclick="return ValidateForm();" class="btn btn-success">Submit</button>
+                            <button type="submit" onclick="return ValidateForm();" formaction="Localization/ExcelToExport" formmethod="post" class="btn btn-success">Export to Excel</button>
+                        </div>
+
+                    </div>
+                </div>
+                <span>@ViewBag.Message</span>
+
+            </div>
+        }*@
+
+                @Html.Grid(Model).Columns(columns =>{
+           columns.Add(col => col.DocumentId).Titled("DocumentId");
+                columns.Add(col => col.DocumentNo).Titled("DocumentNo");
+                columns.Add(col => col.WorkflowId).Titled("WorkflowId");
+           columns.Add(col => col.Status).Titled("Status");        
+        columns.Add().Encoded(false).Sanitized(false).Titled("Signed")
+.RenderValueAs(col => @<span>
+                <a href="~/Documents/ReceivedDoc/@col.SignDocumentPath" target="_blank"><i class="icon icon-file"></i> View</a>
+            </span>);
+columns.Add().Encoded(false).Sanitized(false).Titled("Created On")
+.RenderValueAs(col => @<span>
+                @Convert.ToDateTime(col.CreatedOn).ToString("dd MMM yyyy hh:mm tt")
+            </span> );
+     }).WithPaging(50);
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Areas/Admin/Content/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                minDate: new Date()
+            });
+            //$('#myGrid').DataTable();
+            //$("#myGrid_filter").hide();
+            //$("#myGrid_length").hide();
+
+        });
+
+        function ValidateForm() {
+
+            var isValid = true;
+            if ($("#FromDate").val() == "") {
+                $("#FromDate").addClass("error");
+                isValid = false;
+            } else {
+                $("#FromDate").removeClass("error");
+            }
+            if ($("#ToDate").val() == "") {
+                $("#ToDate").addClass("error");
+                isValid = false;
+            } else {
+                $("#ToDate").removeClass("error");
+            }
+
+            return isValid;
+        }
+
+
+
+    </script>
+}

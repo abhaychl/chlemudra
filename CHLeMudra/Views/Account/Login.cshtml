@@ -1,0 +1,38 @@
+﻿@model CHLeMudra.Models.LoginModel
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+@using (Html.BeginForm("SubmitLogin","Account", FormMethod.Post, new { ReturnUrl = ViewBag.ReturnUrl }))
+{
+<div class="form_back">
+    <h3>Login Here</h3>
+    <div class="field_back">
+        <div class="inner_widgrt">
+            <form action="#" style="max-width:500px;margin:auto">
+                <div class="input-container">
+                    <i class="fa fa-envelope icon"></i>
+                    
+                    @Html.TextBoxFor(m => m.Username, new { @placeholder = "Username", @class = "input-field",autocomplete = "off" })
+                   
+                </div>
+                @Html.ValidationMessageFor(m => m.Username)
+                <div class="input-container">
+                    <i class="fa fa-key icon"></i>                    
+                    @Html.PasswordFor(m => m.Password, new { @placeholder = "Password", @class = "input-field",autocomplete = "off" })
+                  
+                </div>
+                @Html.ValidationMessageFor(m => m.Password)
+                @if (!string.IsNullOrEmpty(ViewBag.Message))
+                {
+                    <span style="color:red;font-size:12px;">@ViewBag.Message</span>
+                }
+                <button type="submit" class="btn" value="Login">Login</button>
+            </form>
+        </div>
+       
+    </div>
+</div>
+}

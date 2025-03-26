@@ -1,0 +1,107 @@
+﻿@model CHLeMudra.Models.DocumentModel
+@{
+    ViewBag.Title = "SendDocumentforSign";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    th {
+        font-size: 12px;
+    }
+</style>
+<div id="content">
+    <div id="content-header">
+        <div id="breadcrumb" style="float:left;"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="tip-bottom">Form elements</a> <a href="#" class="current">Common elements</a></div>
+
+    </div>
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+                @*<h5>Localization Content</h5>*@
+
+                @using (Html.BeginForm("SendDocumentforFlexySign", "Docusign", FormMethod.Post, new { enctype = "multipart/form-data", id = "SendForsign" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <br />
+                    <div class="panel panel-primary col-md-12">
+                        <div class="panel-heading">Send For Sign</div>
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+                                <hr />
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="form-group">
+
+                                    @Html.Label("Document Title", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        <input id="DocumentTitle" type="text" name="DocumentTitle" class="form-control" style="height:42px" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.Label("Document", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        <input id="UploadDocument" type="file" name="UploadDocument" class="form-control" style="height:42px" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th>
+                                                    Name
+                                                </th>
+                                                <th>
+                                                    Email
+                                                </th>
+
+                                            </tr>
+                                            @{
+                                                //To make unique Id
+                                                int i = 0;
+                                                List<int> Nlist = new List<int> { 1, 2 };
+                                                foreach (var item in Nlist)
+                                                {
+
+                                                    <tr>
+                                                        <td>
+
+                                                            @*<input type="text" id="Model.Recipients[@item].Name" name="Recipient[@item].Name" />*@
+
+                                                            @Html.TextBoxFor(o => o.Recipients[i].Name, new { @id = "ItemName_" + i, @class = "span11" })
+                                                        </td>
+                                                        <td>
+                                                            @*<input type="text" id="Model.Recipients[@item].Email" name="Recipient[@item].Email"  />*@
+                                                            @Html.TextBoxFor(o => o.Recipients[i].Email, new { @id = "Email_" + i, @class = "span11" })
+                                                        </td>
+
+
+                                                    </tr>
+
+                                                    i++;
+                                                }
+                                            }
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="submit" value="Send For Sign" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                                <div style="background: yellow;padding: 10px;">@ViewBag.Message</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+}
